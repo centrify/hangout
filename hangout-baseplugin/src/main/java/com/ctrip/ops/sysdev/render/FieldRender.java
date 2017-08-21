@@ -8,8 +8,13 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+
+import com.ctrip.ops.sysdev.decoders.JsonDecoder;
+
 @Log4j2
 public class FieldRender implements TemplateRender {
+	private static final Logger log = Logger.getLogger(FieldRender.class.getName());
     private ArrayList<String> fields = new ArrayList();
     final Pattern p = Pattern.compile("\\[(\\S+?)\\]+");
 

@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.ctrip.ops.sysdev.baseplugin.BaseFilter;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class KV extends BaseFilter {
-
+	private static final Logger log = Logger.getLogger(KV.class.getName());
     private String source;
     private String target;
     private String field_split;

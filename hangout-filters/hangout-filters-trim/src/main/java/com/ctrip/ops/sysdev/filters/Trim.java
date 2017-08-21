@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.ctrip.ops.sysdev.fieldSetter.FieldSetter;
 import com.ctrip.ops.sysdev.render.TemplateRender;
 import lombok.extern.log4j.Log4j2;
@@ -13,7 +15,7 @@ import scala.Tuple2;
 
 @Log4j2
 public class Trim extends BaseFilter {
-
+	private static final Logger log = Logger.getLogger(Trim.class.getName());
     public Trim(Map config) {
         super(config);
     }

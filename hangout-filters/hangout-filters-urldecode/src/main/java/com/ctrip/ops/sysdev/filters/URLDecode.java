@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.util.ArrayList;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
+
 import java.net.URLDecoder;
 
 import com.ctrip.ops.sysdev.fieldSetter.FieldSetter;
@@ -15,7 +18,7 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class URLDecode extends BaseFilter {
-
+	private static final Logger log = Logger.getLogger(URLDecode.class.getName());
 
     @SuppressWarnings("rawtypes")
     public URLDecode(Map config) {
@@ -34,7 +37,7 @@ public class URLDecode extends BaseFilter {
                 templateRender = TemplateRender.getRender(field, false);
             } catch (IOException e) {
                 log.fatal("could NOT build template render from " + field);
-                System.exit(1);
+                throw new IllegalStateException("could NOT build template render from " + field);
             }
             this.fields.add(new Tuple2(FieldSetter.getFieldSetter(field), templateRender));
         }

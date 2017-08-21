@@ -7,11 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.ctrip.ops.sysdev.render.FreeMarkerRender;
 import com.ctrip.ops.sysdev.render.TemplateRender;
 
 @Log4j2
 public abstract class BaseOutput extends Base {
+	private static final Logger log = Logger.getLogger(BaseOutput.class.getName());
     protected Map config;
     protected List<TemplateRender> IF;
 
@@ -27,7 +30,7 @@ public abstract class BaseOutput extends Base {
                     IF.add(new FreeMarkerRender(c, c));
                 } catch (IOException e) {
                     log.fatal(e.getMessage());
-                    System.exit(1);
+                    throw new IllegalStateException("add if error." + e.getMessage());
                 }
             }
         } else {

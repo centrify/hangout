@@ -8,8 +8,11 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 @Log4j2
 public class FreeMarkerRender implements TemplateRender {
+	private static final Logger log = Logger.getLogger(FreeMarkerRender.class.getName());
     private Template t;
 
     public FreeMarkerRender(String template, String templateName)

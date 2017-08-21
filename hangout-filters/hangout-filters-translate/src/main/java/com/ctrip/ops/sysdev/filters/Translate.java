@@ -13,11 +13,13 @@ import com.ctrip.ops.sysdev.baseplugin.BaseFilter;
 import com.ctrip.ops.sysdev.fieldSetter.FieldSetter;
 import com.ctrip.ops.sysdev.render.TemplateRender;
 import lombok.extern.log4j.Log4j2;
+
+import org.apache.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 
 @Log4j2
 public class Translate extends BaseFilter {
-
+	private static final Logger log = Logger.getLogger(Translate.class.getName());
     public Translate(Map config) {
         super(config);
     }
@@ -45,7 +47,7 @@ public class Translate extends BaseFilter {
             } catch (IOException e) {
                 e.printStackTrace();
                 log.error("failed to load " + dictionaryPath);
-                System.exit(1);
+                throw new IllegalStateException("failed to load " + dictionaryPath);
             }
         } else {
             FileInputStream input;
@@ -55,7 +57,7 @@ public class Translate extends BaseFilter {
             } catch (FileNotFoundException e) {
                 log.error(dictionaryPath + " is not found");
                 log.error(e.getMessage());
-                System.exit(1);
+                throw new IllegalStateException(dictionaryPath + " is not found" + e.getMessage());
             }
         }
 
@@ -69,7 +71,7 @@ public class Translate extends BaseFilter {
             this.source = TemplateRender.getRender(sourceField, false);
         } catch (IOException e) {
             log.fatal("could NOT build template render from " + sourceField);
-            System.exit(1);
+            throw new IllegalStateException("could NOT build template render from " + sourceField);
         }
         this.target = FieldSetter.getFieldSetter(targetField);
 
@@ -77,7 +79,7 @@ public class Translate extends BaseFilter {
 
         if (dictionaryPath == null) {
             log.fatal("dictionary_path must be inclued in config");
-            System.exit(1);
+            throw new IllegalStateException("dictionary_path must be inclued in config");
         }
 
         loadDictionary();

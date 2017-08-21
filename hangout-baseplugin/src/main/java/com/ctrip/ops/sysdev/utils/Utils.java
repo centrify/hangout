@@ -1,6 +1,8 @@
 package com.ctrip.ops.sysdev.utils;
 
 import com.ctrip.ops.sysdev.baseplugin.BaseFilter;
+import com.ctrip.ops.sysdev.render.FreeMarkerRender;
+
 import lombok.extern.log4j.Log4j2;
 
 import java.lang.reflect.Constructor;
@@ -9,10 +11,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 
 @SuppressWarnings("ALL")
 @Log4j2
 public class Utils {
+	private static final Logger log = Logger.getLogger(Utils.class.getName());
     public static List<BaseFilter> createFilterProcessors(List<Map> filters) {
         List<BaseFilter> filterProcessors = new ArrayList();
 
@@ -43,11 +48,11 @@ public class Utils {
                                 continue;
                             } else {
                                 log.error(e);
-                                System.exit(1);
+                                throw new IllegalStateException(e.getMessage());
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            System.exit(1);
+                            throw new IllegalStateException(e.getMessage());
                         }
                     }
                 });

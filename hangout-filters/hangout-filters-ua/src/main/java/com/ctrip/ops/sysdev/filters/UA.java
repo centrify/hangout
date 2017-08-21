@@ -8,9 +8,11 @@ import ua_parser.Parser;
 import java.io.IOException;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 @Log4j2
 public class UA extends BaseFilter {
-
+	private static final Logger log = Logger.getLogger(UA.class.getName());
 
 	public UA(Map config) {
 		super(config);
@@ -22,7 +24,7 @@ public class UA extends BaseFilter {
 	protected void prepare() {
 		if (!config.containsKey("source")) {
 			log.error("no field configured in Json");
-			System.exit(1);
+			throw new IllegalStateException("no field configured in Json");
 		}
 		this.source = (String) config.get("source");
 
@@ -31,7 +33,7 @@ public class UA extends BaseFilter {
 		} catch (IOException e) {
 			log.error(e);
 			e.printStackTrace();
-			System.exit(1);
+			throw new IllegalStateException(e.getMessage());
 		}
 	};
 

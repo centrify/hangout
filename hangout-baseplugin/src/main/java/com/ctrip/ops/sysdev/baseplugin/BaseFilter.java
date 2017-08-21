@@ -10,9 +10,11 @@ import lombok.extern.log4j.Log4j2;
 import java.io.IOException;
 import java.util.*;
 
+import org.apache.log4j.Logger;
+
 @Log4j2
 public class BaseFilter {
-
+	private static final Logger log = Logger.getLogger(BaseFilter.class.getName());
     protected Map config;
     protected String tagOnFailure;
     protected List<FieldDeleter> removeFields;
@@ -30,7 +32,7 @@ public class BaseFilter {
                     IF.add(new FreeMarkerRender(c, c));
                 } catch (IOException e) {
                     log.fatal(e.getMessage());
-                    System.exit(1);
+                    throw new IllegalStateException("add if error." + e.getMessage());
                 }
             }
         } else {
@@ -65,7 +67,7 @@ public class BaseFilter {
                     this.addFields.put(FieldSetter.getFieldSetter(field), TemplateRender.getRender(value));
                 } catch (IOException e) {
                     log.fatal(e.getMessage());
-                    System.exit(1);
+                    throw new IllegalStateException("add fields error." + e.getMessage());
                 }
             }
         } else {

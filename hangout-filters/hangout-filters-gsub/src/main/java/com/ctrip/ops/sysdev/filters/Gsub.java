@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.log4j.Logger;
+
 import com.ctrip.ops.sysdev.fieldSetter.FieldSetter;
 import com.ctrip.ops.sysdev.render.TemplateRender;
 import lombok.extern.log4j.Log4j2;
@@ -15,6 +17,7 @@ import scala.Tuple4;
 
 @Log4j2
 public class Gsub extends BaseFilter {
+	private static final Logger log = Logger.getLogger(Gsub.class.getName());
     public Gsub(Map config) {
         super(config);
     }
@@ -39,7 +42,7 @@ public class Gsub extends BaseFilter {
                 templateRender = TemplateRender.getRender(field, false);
             } catch (Exception e) {
                 log.error("could not render template: " + field);
-                System.exit(1);
+                throw new IllegalStateException("could not render template: " + field);
             }
             f.add(new Tuple4(FieldSetter.getFieldSetter(field), templateRender, regex, replacement));
 

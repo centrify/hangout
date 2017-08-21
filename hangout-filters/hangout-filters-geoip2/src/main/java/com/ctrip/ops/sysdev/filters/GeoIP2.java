@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.ctrip.ops.sysdev.baseplugin.BaseFilter;
 import com.maxmind.geoip2.model.CountryResponse;
 import com.maxmind.geoip2.record.Subdivision;
@@ -24,7 +26,7 @@ import com.maxmind.geoip2.record.Location;
 
 @Log4j2
 public class GeoIP2 extends BaseFilter {
-
+	private static final Logger log = Logger.getLogger(GeoIP2.class.getName());
     public GeoIP2(Map config) {
         super(config);
     }
@@ -37,7 +39,7 @@ public class GeoIP2 extends BaseFilter {
     protected void prepare() {
         if (!config.containsKey("source")) {
             log.error("no source configured in GeoIP");
-            System.exit(1);
+            throw new IllegalStateException("no source configured in GeoIP");
         }
         this.source = (String) config.get("source");
 
@@ -56,7 +58,7 @@ public class GeoIP2 extends BaseFilter {
         // A File object pointing to your GeoIP2 or GeoLite2 database
         if (!config.containsKey("database")) {
             log.error("no database configured in GeoIP");
-            System.exit(1);
+            throw new IllegalStateException("no database configured in GeoIP");
         }
 
         if (config.containsKey("country_code")) {
@@ -76,7 +78,7 @@ public class GeoIP2 extends BaseFilter {
             } catch (Exception e) {
                 e.printStackTrace();
                 log.error("could not get/set " + fieldname + " as boolean value");
-                System.exit(1);
+                throw new IllegalStateException("could not get/set " + fieldname + " as boolean value");
             }
         }
 
@@ -92,7 +94,7 @@ public class GeoIP2 extends BaseFilter {
             } catch (IOException e) {
                 e.printStackTrace();
                 log.error("failed to load " + databasePath);
-                System.exit(1);
+                throw new IllegalStateException("failed to load " + databasePath);
             }
             // This creates the DatabaseReader object, which should be reused across lookups.
             try {
@@ -100,7 +102,7 @@ public class GeoIP2 extends BaseFilter {
             } catch (IOException e) {
                 log.error("failed to prepare DatabaseReader for geoip");
                 log.error(e);
-                System.exit(1);
+                throw new IllegalStateException("failed to prepare DatabaseReader for geoip");
             }
 
         } else {
@@ -111,7 +113,7 @@ public class GeoIP2 extends BaseFilter {
             } catch (IOException e) {
                 log.error("failed to prepare DatabaseReader for geoip");
                 log.error(e);
-                System.exit(1);
+                throw new IllegalStateException("failed to prepare DatabaseReader for geoip");
             }
         }
     }

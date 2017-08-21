@@ -41,12 +41,12 @@ public class CommandLineValues {
             // If help is needed
             if (isHelp) {
                 parser.printUsage(System.err);
-                System.exit(0);
+                throw new IllegalStateException();
             }
         } catch (CmdLineException e) {
             System.err.println(e.getMessage());
             // print the list of available options
-            System.exit(1);
+            throw new IllegalStateException(e.getMessage());
         }
     }
 
@@ -75,4 +75,12 @@ public class CommandLineValues {
         parser.printUsage(System.out);
         System.err.println();
     }
+
+	public String getConfigFile() {
+		return configFile;
+	}
+
+	public void setConfigFile(String configFile) {
+		this.configFile = configFile;
+	}
 }

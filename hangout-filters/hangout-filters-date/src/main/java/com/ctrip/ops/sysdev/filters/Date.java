@@ -11,8 +11,11 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 @Log4j2
 public class Date extends BaseFilter {
+	private static final Logger log = Logger.getLogger(Date.class.getName());
     private TemplateRender templateRender;
     private FieldSetter fiedlSetter;
     private boolean addYear;
@@ -32,7 +35,7 @@ public class Date extends BaseFilter {
             this.templateRender = TemplateRender.getRender(src, false);
         } catch (IOException e) {
             log.error("could NOT build TemplateRender from " + src);
-            System.exit(1);
+            throw new IllegalStateException("could NOT build TemplateRender from " + src);
         }
 
         String target = "@timestamp";

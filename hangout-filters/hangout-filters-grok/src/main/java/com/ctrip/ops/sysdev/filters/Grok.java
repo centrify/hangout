@@ -1,6 +1,13 @@
 package com.ctrip.ops.sysdev.filters;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -10,8 +17,7 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import com.ctrip.ops.sysdev.baseplugin.BaseFilter;
-import lombok.extern.log4j.Log4j2;
+import org.apache.log4j.Logger;
 import org.jcodings.specific.UTF8Encoding;
 import org.joni.Matcher;
 import org.joni.NameEntry;
@@ -19,10 +25,13 @@ import org.joni.Option;
 import org.joni.Regex;
 import org.joni.Region;
 
+import com.ctrip.ops.sysdev.baseplugin.BaseFilter;
+
+import lombok.extern.log4j.Log4j2;
+
 @Log4j2
 public class Grok extends BaseFilter {
-	
-	public static final String FILTER_HOME_DIR= "filter.home.dir";
+	private static final Logger log = Logger.getLogger(Grok.class.getName());
 
     private String src;
     private String encoding;
@@ -141,7 +150,7 @@ public class Grok extends BaseFilter {
             } catch (IOException e) {
                 log.error("failed to prepare patterns");
                 log.trace(e);
-                System.exit(1);
+                throw new IllegalStateException("failed to prepare patterns" + e.getMessage());
             }
 
         } else { // Run with IDE
@@ -158,17 +167,13 @@ public class Grok extends BaseFilter {
                 ArrayList<String> pattern_paths = (ArrayList<String>) this.config
                         .get("pattern_paths");
 
-                String homeDir = "";
-                if (this.config.containsKey(FILTER_HOME_DIR)) {
-                	homeDir = (String) config.get(FILTER_HOME_DIR) + File.separator;
-                }
                 for (String pattern_path : pattern_paths) {
-                    load_patterns(new File(homeDir + pattern_path));
+                    load_patterns(new File(pattern_path));
                 }
             } catch (Exception e) {
                 log.error("failed to read pattern_path");
                 log.trace(e);
-                System.exit(1);
+                throw new IllegalStateException("failed to read pattern_path:" + e.getMessage());
             }
         }
 
@@ -184,7 +189,7 @@ public class Grok extends BaseFilter {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
                 log.error("failed to compile match pattern.");
-                System.exit(1);
+                throw new IllegalStateException("failed to compile match pattern." + e.getMessage());
             }
 
             matches.add(regex);

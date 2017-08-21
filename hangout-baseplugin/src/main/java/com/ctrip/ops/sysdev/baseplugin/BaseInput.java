@@ -15,8 +15,11 @@ import java.util.Map;
 
 import java.util.Map.Entry;
 
+import org.apache.log4j.Logger;
+
 @Log4j2
 public abstract class BaseInput extends Base {
+	private static final Logger log = Logger.getLogger(BaseInput.class.getName());
     protected Map<String, Object> config;
     protected Decode decoder;
     protected List<BaseFilter> filterProcessors;
@@ -101,18 +104,18 @@ public abstract class BaseInput extends Base {
                                 continue;
                             } else {
                                 log.error(e);
-                                System.exit(1);
+                                throw new IllegalStateException(e.getMessage());
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            System.exit(1);
+                            throw new IllegalStateException(e.getMessage());
                         }
                     }
                 });
             });
         } else {
             log.error("Error: At least One output should be set.");
-            System.exit(1);
+            throw new IllegalStateException("Error: At least One output should be set.");
         }
 
 

@@ -10,10 +10,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 @SuppressWarnings("ALL")
 @Log4j2
 public class Uppercase extends BaseFilter {
-
+	private static final Logger log = Logger.getLogger(Uppercase.class.getName());
 
     public Uppercase(Map config) {
         super(config);
@@ -28,7 +30,7 @@ public class Uppercase extends BaseFilter {
                 this.fields.add(new Tuple2(FieldSetter.getFieldSetter(field), TemplateRender.getRender(field, false)));
             } catch (IOException e) {
                 log.error("could NOT build TemplateRender from " + field);
-                System.exit(1);
+                throw new IllegalStateException("could NOT build TemplateRender from " + field);
             }
         }
     }
