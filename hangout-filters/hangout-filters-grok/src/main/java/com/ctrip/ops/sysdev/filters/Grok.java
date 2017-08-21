@@ -21,6 +21,8 @@ import org.joni.Region;
 
 @Log4j2
 public class Grok extends BaseFilter {
+	
+	public static final String FILTER_HOME_DIR= "filter.home.dir";
 
     private String src;
     private String encoding;
@@ -156,8 +158,12 @@ public class Grok extends BaseFilter {
                 ArrayList<String> pattern_paths = (ArrayList<String>) this.config
                         .get("pattern_paths");
 
+                String homeDir = "";
+                if (this.config.containsKey(FILTER_HOME_DIR)) {
+                	homeDir = (String) config.get(FILTER_HOME_DIR) + File.separator;
+                }
                 for (String pattern_path : pattern_paths) {
-                    load_patterns(new File(pattern_path));
+                    load_patterns(new File(homeDir + pattern_path));
                 }
             } catch (Exception e) {
                 log.error("failed to read pattern_path");
