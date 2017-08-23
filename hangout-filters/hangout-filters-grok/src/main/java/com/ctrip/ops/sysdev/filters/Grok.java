@@ -32,6 +32,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class Grok extends BaseFilter {
 	private static final Logger log = Logger.getLogger(Grok.class.getName());
+	private static final String PATTERN_DIR = "filtersLoader_pattern_dir";
 
     private String src;
     private String encoding;
@@ -167,8 +168,12 @@ public class Grok extends BaseFilter {
                 ArrayList<String> pattern_paths = (ArrayList<String>) this.config
                         .get("pattern_paths");
 
-                for (String pattern_path : pattern_paths) {
-                    load_patterns(new File(pattern_path));
+            	String dir = "";
+            	if (System.getProperty(PATTERN_DIR) != null) {
+            		dir = System.getProperty(PATTERN_DIR) + File.separator;
+            		}
+                for (String pattern_path : pattern_paths) {  
+                    load_patterns(new File(dir + pattern_path));
                 }
             } catch (Exception e) {
                 log.error("failed to read pattern_path");
