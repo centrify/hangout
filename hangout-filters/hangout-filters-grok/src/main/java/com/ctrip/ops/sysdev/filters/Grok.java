@@ -31,7 +31,7 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class Grok extends BaseFilter {
-	private static final Logger log = Logger.getLogger(Grok.class.getName());
+	private static final Logger logger = Logger.getLogger(Grok.class);
 	private static final String PATTERN_DIR = "filtersLoader_pattern_dir";
 
     private String src;
@@ -103,7 +103,7 @@ public class Grok extends BaseFilter {
                 br.close();
 
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error(e);
             }
         }
 
@@ -115,7 +115,7 @@ public class Grok extends BaseFilter {
 
         final String path = "patterns";
         final File jarFile = new File(getClass().getProtectionDomain()
-                .getCodeSource().getLocation().getPath());
+                .getCodeSource().getLocation().getPath().replaceAll("%20",  " "));
 
         //TODO NOT unzip to tmp
         if (jarFile.isFile()) { // Run with JAR file
@@ -138,20 +138,20 @@ public class Grok extends BaseFilter {
                             os.close();
                             in.close();
                         } catch (Exception e) {
-                            log.warn(e);
+                            logger.warn(e);
                         }
                         try {
                             load_patterns(file);
                         } catch (Exception e) {
-                            log.warn(e);
+                            logger.warn(e);
                         }
                     }
                 }
                 jar.close();
             } catch (IOException e) {
-                log.error("failed to prepare patterns");
-                log.trace(e);
-                throw new IllegalStateException("failed to prepare patterns" + e.getMessage());
+                logger.error("failed to prepare patterns");
+                logger.trace(e);
+                throw new IllegalStateException("failed to prepare patterns", e);
             }
 
         } else { // Run with IDE
@@ -159,7 +159,7 @@ public class Grok extends BaseFilter {
                 load_patterns(new File(ClassLoader
                         .getSystemResource("patterns").getFile()));
             } catch (Exception e) {
-                log.warn(e);
+                logger.warn(e);
             }
         }
 
@@ -176,9 +176,9 @@ public class Grok extends BaseFilter {
                     load_patterns(new File(dir + pattern_path));
                 }
             } catch (Exception e) {
-                log.error("failed to read pattern_path");
-                log.trace(e);
-                throw new IllegalStateException("failed to read pattern_path:" + e.getMessage());
+                logger.error("failed to read pattern_path");
+                logger.trace(e);
+                throw new IllegalStateException("failed to read pattern_path:", e);
             }
         }
 
@@ -193,7 +193,7 @@ public class Grok extends BaseFilter {
                         UTF8Encoding.INSTANCE);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
-                log.error("failed to compile match pattern.");
+                logger.error("failed to compile match pattern.");
                 throw new IllegalStateException("failed to compile match pattern." + e.getMessage());
             }
 
@@ -231,7 +231,7 @@ public class Grok extends BaseFilter {
         try {
             bs = input.getBytes(this.encoding);
         } catch (UnsupportedEncodingException e) {
-            log.error("input.getBytes error, maybe wrong encoding? try do NOT use encoding");
+            logger.error("input.getBytes error, maybe wrong encoding? try do NOT use encoding");
             bs = input.getBytes();
         }
 
@@ -273,8 +273,8 @@ public class Grok extends BaseFilter {
                 }
 
             } catch (Exception e) {
-                log.warn("grok failed:" + event);
-                log.trace(e.getLocalizedMessage());
+                logger.warn("grok failed:" + event);
+                logger.trace(e.getLocalizedMessage());
                 success = false;
             }
         }
