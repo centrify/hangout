@@ -17,7 +17,8 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jcodings.specific.UTF8Encoding;
 import org.joni.Matcher;
 import org.joni.NameEntry;
@@ -31,7 +32,7 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class Grok extends BaseFilter {
-	private static final Logger logger = Logger.getLogger(Grok.class);
+	static private final Logger logger = LogManager.getLogger(Grok.class);
 	private static final String PATTERN_DIR = "filtersLoader_pattern_dir";
 
     private String src;

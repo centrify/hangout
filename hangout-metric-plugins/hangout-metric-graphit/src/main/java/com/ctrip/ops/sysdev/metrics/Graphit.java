@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.ctrip.ops.sysdev.metric.Metric;
 
 /**
@@ -26,6 +29,7 @@ import com.ctrip.ops.sysdev.metric.Metric;
 
 @Log4j2
 public class Graphit extends BaseMetric {
+	static private final Logger log = LogManager.getLogger(Graphit.class);
 
     private final String host;
     private final int port;

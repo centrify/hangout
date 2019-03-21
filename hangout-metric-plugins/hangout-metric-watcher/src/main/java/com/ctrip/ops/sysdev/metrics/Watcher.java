@@ -16,6 +16,10 @@ import lombok.extern.log4j.Log4j2;
 
 
 import javax.servlet.ServletException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.Map;
 
 import com.ctrip.ops.sysdev.metric.Metric;
@@ -25,7 +29,7 @@ import com.ctrip.ops.sysdev.metric.Metric;
  */
 @Log4j2
 public class Watcher extends BaseMetric {
-
+	static private final Logger log = LogManager.getLogger(Watcher.class);
 
     private final String host;
     private final int port;

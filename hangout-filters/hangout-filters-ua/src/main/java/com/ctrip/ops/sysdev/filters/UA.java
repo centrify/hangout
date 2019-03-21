@@ -1,18 +1,20 @@
 package com.ctrip.ops.sysdev.filters;
 
+import java.io.IOException;
+import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.ctrip.ops.sysdev.baseplugin.BaseFilter;
+
 import lombok.extern.log4j.Log4j2;
 import ua_parser.Client;
 import ua_parser.Parser;
 
-import java.io.IOException;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
-
 @Log4j2
 public class UA extends BaseFilter {
-	private static final Logger log = Logger.getLogger(UA.class.getName());
+	static private final Logger log = LogManager.getLogger(UA.class);
 
 	public UA(Map config) {
 		super(config);

@@ -1,20 +1,25 @@
 package com.ctrip.ops.sysdev.core;
 
-import lombok.extern.log4j.Log4j2;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ctrip.ops.sysdev.baseplugin.BaseInput;
 import com.ctrip.ops.sysdev.baseplugin.BaseMetric;
 import com.ctrip.ops.sysdev.config.CommandLineValues;
 import com.ctrip.ops.sysdev.config.HangoutConfig;
 
-import java.lang.reflect.Constructor;
-import java.util.*;
-
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class Main {
-	private static final Logger log = Logger.getLogger(Main.class.getName());
+	static private final Logger log = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) {
 

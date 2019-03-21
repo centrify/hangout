@@ -1,19 +1,20 @@
 package com.ctrip.ops.sysdev.filters;
 
 import java.io.IOException;
-
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ctrip.ops.sysdev.baseplugin.BaseFilter;
 import com.ctrip.ops.sysdev.fieldSetter.FieldSetter;
 import com.ctrip.ops.sysdev.render.TemplateRender;
+
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class Replace extends BaseFilter {
-	private static final Logger log = Logger.getLogger(Replace.class.getName());
+	static private final Logger log = LogManager.getLogger(Replace.class);
     public Replace(Map config) {
         super(config);
     }

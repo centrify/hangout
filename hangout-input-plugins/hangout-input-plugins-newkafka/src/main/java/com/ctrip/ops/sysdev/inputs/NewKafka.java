@@ -14,6 +14,8 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.TopicPartition;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -23,6 +25,7 @@ import java.util.regex.Pattern;
 
 @Log4j2
 public class NewKafka extends BaseInput {
+	static private final Logger log = LogManager.getLogger(NewKafka.class);
 
     private ExecutorService executor;
     private Map<String, Integer> topics;

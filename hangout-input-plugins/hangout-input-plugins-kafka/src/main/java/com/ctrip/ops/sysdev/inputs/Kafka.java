@@ -17,8 +17,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 @Log4j2
 public class Kafka extends BaseInput {
+	static private final Logger log = LogManager.getLogger(Kafka.class);
 
     private ConsumerConnector consumer;
     private ExecutorService executor;
