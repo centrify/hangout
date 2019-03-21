@@ -1,19 +1,25 @@
 package com.ctrip.ops.sysdev.outputs;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import com.ctrip.ops.sysdev.baseplugin.BaseOutput;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.json.simple.JSONValue;
+
+import com.ctrip.ops.sysdev.baseplugin.BaseOutput;
+import com.ctrip.ops.sysdev.render.TemplateRender;
 
 import lombok.extern.log4j.Log4j2;
-import org.json.simple.JSONValue;
 
 @Log4j2
 public class Kafka extends BaseOutput {
+	static private final Logger log = LogManager.getLogger(Kafka.class);
 
     private Producer producer;
     private String topic;

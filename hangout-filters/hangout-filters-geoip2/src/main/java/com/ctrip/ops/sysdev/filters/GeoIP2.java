@@ -11,22 +11,23 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ctrip.ops.sysdev.baseplugin.BaseFilter;
-import com.maxmind.geoip2.model.CountryResponse;
-import com.maxmind.geoip2.record.Subdivision;
-import lombok.extern.log4j.Log4j2;
-
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.model.CityResponse;
+import com.maxmind.geoip2.model.CountryResponse;
 import com.maxmind.geoip2.record.City;
 import com.maxmind.geoip2.record.Country;
 import com.maxmind.geoip2.record.Location;
+import com.maxmind.geoip2.record.Subdivision;
+
+import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class GeoIP2 extends BaseFilter {
-	private static final Logger log = Logger.getLogger(GeoIP2.class.getName());
+	static private final Logger log = LogManager.getLogger(GeoIP2.class);
     public GeoIP2(Map config) {
         super(config);
     }

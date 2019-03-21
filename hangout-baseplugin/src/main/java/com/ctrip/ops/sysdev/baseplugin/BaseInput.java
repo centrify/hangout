@@ -1,25 +1,25 @@
 package com.ctrip.ops.sysdev.baseplugin;
 
-import com.ctrip.ops.sysdev.utils.Utils;
-import com.ctrip.ops.sysdev.decoders.Decode;
-import com.ctrip.ops.sysdev.decoders.JsonDecoder;
-import com.ctrip.ops.sysdev.decoders.PlainDecoder;
-import lombok.extern.log4j.Log4j2;
-
-
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
 import java.util.Map.Entry;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.ctrip.ops.sysdev.decoders.Decode;
+import com.ctrip.ops.sysdev.decoders.JsonDecoder;
+import com.ctrip.ops.sysdev.decoders.PlainDecoder;
+import com.ctrip.ops.sysdev.utils.Utils;
+
+import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public abstract class BaseInput extends Base {
-	private static final Logger log = Logger.getLogger(BaseInput.class.getName());
+	static private final Logger log = LogManager.getLogger(BaseInput.class);
     protected Map<String, Object> config;
     protected Decode decoder;
     protected List<BaseFilter> filterProcessors;

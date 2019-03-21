@@ -1,18 +1,19 @@
 package com.ctrip.ops.sysdev.render;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import lombok.extern.log4j.Log4j2;
-
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class FreeMarkerRender implements TemplateRender {
-	private static final Logger log = Logger.getLogger(FreeMarkerRender.class.getName());
+	static private final Logger log = LogManager.getLogger(FreeMarkerRender.class);
     private Template t;
 
     public FreeMarkerRender(String template, String templateName)

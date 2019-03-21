@@ -6,19 +6,18 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ctrip.ops.sysdev.baseplugin.BaseFilter;
-
 import com.ctrip.ops.sysdev.fieldSetter.FieldSetter;
 import com.ctrip.ops.sysdev.render.TemplateRender;
-import com.ctrip.ops.sysdev.utils.Utils;
 
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class Add extends BaseFilter {
-	private static final Logger log = Logger.getLogger(Add.class.getName());
+	private static final Logger log = LogManager.getLogger(Add.class);
     public Add(Map config) {
         super(config);
     }

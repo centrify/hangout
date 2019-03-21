@@ -1,21 +1,23 @@
 package com.ctrip.ops.sysdev.filters;
 
-import com.ctrip.ops.sysdev.baseplugin.BaseFilter;
-import com.ctrip.ops.sysdev.fieldSetter.FieldSetter;
-import com.ctrip.ops.sysdev.render.TemplateRender;
-import lombok.extern.log4j.Log4j2;
-import scala.Tuple4;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.ctrip.ops.sysdev.baseplugin.BaseFilter;
+import com.ctrip.ops.sysdev.fieldSetter.FieldSetter;
+import com.ctrip.ops.sysdev.render.TemplateRender;
+
+import lombok.extern.log4j.Log4j2;
+import scala.Tuple4;
 
 @Log4j2
 public class Convert extends BaseFilter {
-	private static final Logger log = Logger.getLogger(Convert.class.getName());
+	static private final Logger log = LogManager.getLogger(Convert.class);
     private Map<FieldSetter, Tuple4> f;
 
     public Convert(Map config) {

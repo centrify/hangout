@@ -1,20 +1,27 @@
 package com.ctrip.ops.sysdev.baseplugin;
 
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.ctrip.ops.sysdev.fieldDeleter.FieldDeleter;
 import com.ctrip.ops.sysdev.fieldSetter.FieldSetter;
 import com.ctrip.ops.sysdev.render.FreeMarkerRender;
 import com.ctrip.ops.sysdev.render.TemplateRender;
+
 import lombok.extern.log4j.Log4j2;
-
-import java.io.IOException;
-import java.util.*;
-
-import org.apache.log4j.Logger;
 
 @Log4j2
 public class BaseFilter {
-	private static final Logger log = Logger.getLogger(BaseFilter.class.getName());
+	static private final Logger log = LogManager.getLogger(BaseFilter.class);	
     protected Map config;
     protected String tagOnFailure;
     protected List<FieldDeleter> removeFields;

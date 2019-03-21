@@ -1,23 +1,25 @@
 package com.ctrip.ops.sysdev.utils;
 
-import com.ctrip.ops.sysdev.baseplugin.BaseFilter;
-import com.ctrip.ops.sysdev.render.FreeMarkerRender;
-
-import lombok.extern.log4j.Log4j2;
-
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import javax.rmi.CORBA.Util;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.ctrip.ops.sysdev.baseplugin.BaseFilter;
+
+import lombok.extern.log4j.Log4j2;
 
 
 @SuppressWarnings("ALL")
 @Log4j2
 public class Utils {
-	private static final Logger log = Logger.getLogger(Utils.class.getName());
+	static private final Logger log = LogManager.getLogger(Util.class);
     public static List<BaseFilter> createFilterProcessors(List<Map> filters) {
         List<BaseFilter> filterProcessors = new ArrayList();
 

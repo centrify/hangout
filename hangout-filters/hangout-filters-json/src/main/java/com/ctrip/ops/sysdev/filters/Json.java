@@ -2,15 +2,17 @@ package com.ctrip.ops.sysdev.filters;
 
 import java.util.Map;
 
-import com.ctrip.ops.sysdev.baseplugin.BaseFilter;
-import lombok.extern.log4j.Log4j2;
-
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONValue;
+
+import com.ctrip.ops.sysdev.baseplugin.BaseFilter;
+
+import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class Json extends BaseFilter {
-	private static final Logger log = Logger.getLogger(Json.class.getName());
+	static private final Logger log = LogManager.getLogger(Json.class);
     public Json(Map config) {
         super(config);
     }

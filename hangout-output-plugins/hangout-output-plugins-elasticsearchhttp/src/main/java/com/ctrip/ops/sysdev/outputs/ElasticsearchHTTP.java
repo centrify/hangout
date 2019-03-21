@@ -7,6 +7,8 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.http.HttpHost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.nio.entity.NStringEntity;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.sniff.Sniffer;
@@ -22,6 +24,8 @@ import static java.util.stream.Collectors.toList;
 
 @Log4j2
 public class ElasticsearchHTTP extends BaseOutput {
+	static private final Logger log = LogManager.getLogger(ElasticsearchHTTP.class);
+	
     private final static int BULKACTION = 20000;
 
     private String index;

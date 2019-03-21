@@ -1,21 +1,23 @@
 package com.ctrip.ops.sysdev.filters;
 
-import com.ctrip.ops.sysdev.baseplugin.BaseFilter;
-import com.ctrip.ops.sysdev.fieldSetter.FieldSetter;
-import com.ctrip.ops.sysdev.render.TemplateRender;
-import lombok.extern.log4j.Log4j2;
-import scala.Tuple2;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.ctrip.ops.sysdev.baseplugin.BaseFilter;
+import com.ctrip.ops.sysdev.fieldSetter.FieldSetter;
+import com.ctrip.ops.sysdev.render.TemplateRender;
+
+import lombok.extern.log4j.Log4j2;
+import scala.Tuple2;
 
 @SuppressWarnings("ALL")
 @Log4j2
 public class Uppercase extends BaseFilter {
-	private static final Logger log = Logger.getLogger(Uppercase.class.getName());
+	static private final Logger log = LogManager.getLogger(Uppercase.class);
 
     public Uppercase(Map config) {
         super(config);
