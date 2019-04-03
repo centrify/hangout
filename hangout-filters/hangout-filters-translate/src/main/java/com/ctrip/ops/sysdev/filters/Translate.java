@@ -52,7 +52,7 @@ public class Translate extends BaseFilter {
                 throw new IllegalStateException("failed to load " + dictionaryPath);
             }
         } else {
-            FileInputStream input;
+            FileInputStream input = null;
             try {
                 input = new FileInputStream(new File(dictionaryPath));
                 dictionary = (HashMap) yaml.load(input);
@@ -60,6 +60,13 @@ public class Translate extends BaseFilter {
                 log.error(dictionaryPath + " is not found");
                 log.error(e.getMessage());
                 throw new IllegalStateException(dictionaryPath + " is not found" + e.getMessage());
+            } finally {
+                if( input != null )
+                    try {
+                        input.close();
+                    } catch (IOException e) {
+                        log.error("Can't close dictionary:" + e.getMessage());
+                    }
             }
         }
 
