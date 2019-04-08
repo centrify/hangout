@@ -3,6 +3,8 @@ package com.ctrip.ops.sysdev.filters;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,8 +20,14 @@ public class KV extends BaseFilter {
     private String target;
     private String field_split;
     private String value_split;
+    private String field_encloser;
+    private String value_encloser;
+    
     private String trim;
     private String trimkey;
+    
+    private String patternString = "([\\w-]+)=(((\")([^\"]*?)(\\4))|([^\\s]+))"; // default pattern
+    private Pattern pattern; 
 
     private ArrayList<String> excludeKeys, includeKeys;
 
@@ -31,6 +39,8 @@ public class KV extends BaseFilter {
     @SuppressWarnings("unchecked")
     protected void prepare() {
 
+        boolean bUseDefPattern = true;
+        
         if (this.config.containsKey("source")) {
             this.source = (String) this.config.get("source");
         } else {
@@ -43,11 +53,14 @@ public class KV extends BaseFilter {
 
         if (this.config.containsKey("field_split")) {
             this.field_split = (String) this.config.get("field_split");
+            bUseDefPattern = false;
         } else {
             this.field_split = " ";
         }
+        
         if (this.config.containsKey("value_split")) {
             this.value_split = (String) this.config.get("value_split");
+            bUseDefPattern = false;
         } else {
             this.value_split = "=";
         }
@@ -70,7 +83,59 @@ public class KV extends BaseFilter {
 
         this.excludeKeys = (ArrayList<String>) this.config.get("exclude_keys");
         this.includeKeys = (ArrayList<String>) this.config.get("include_keys");
-
+        
+        /* Added by LD, 2019/4/8 */
+        if (this.config.containsKey("field_encloser")) {
+            this.field_encloser = (String) this.config.get("field_encloser");
+            bUseDefPattern = false;
+        } else {
+            this.field_encloser = null;
+        }
+        
+        if (this.config.containsKey("value_encloser")) {
+            this.value_encloser = (String) this.config.get("value_encloser");
+            bUseDefPattern = false;
+        } else {
+            this.value_encloser = "\"";
+        }
+        
+        /* make RE pattern */
+        // "\"?([\\w-]+)\"?=(((\")([^\"]*?)(\\4))|([^\\s]+))"; // default pattern
+        
+        /* field */
+        if( !bUseDefPattern ) {
+            StringBuilder sbPattern = new StringBuilder();
+            if( field_encloser != null )
+                sbPattern.append(field_encloser).append("?");
+            sbPattern.append("([\\w-]+)");
+            if( field_encloser != null )
+                sbPattern.append(field_encloser).append("?");
+            
+            /* value_split */
+            if( !value_split.equals(" ") )
+                sbPattern.append(value_split);
+            else
+                sbPattern.append("\\s");
+            
+            /* value */
+            // (((\\")([^\"]*?)(\\4))
+            sbPattern.append("(((").append(value_encloser).append(")").append("([^").append(value_encloser).append("]*?)(\\4))");
+            
+            /* field_split */
+            sbPattern.append("|([^");
+            
+            if( field_split.equals(" ") )
+                sbPattern.append("\\s");
+            else
+                sbPattern.append(field_split);
+            
+            sbPattern.append("]+))");
+            
+            /* pattern */
+            this.patternString = sbPattern.toString();            
+        }
+        
+        this.pattern = Pattern.compile(patternString);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -83,6 +148,7 @@ public class KV extends BaseFilter {
 
         HashMap targetObj = new HashMap();
 
+        /*
         try {
             String sourceStr = (String) event.get(this.source);
             for (String kv : sourceStr.split(this.field_split)) {
@@ -122,6 +188,47 @@ public class KV extends BaseFilter {
             log.warn(event + "kv faild");
             success = false;
         }
+        */
+        try {
+            String sourceStr = (String) event.get(this.source);            
+            Matcher matcher = pattern.matcher(sourceStr);
+
+            while (matcher.find()) {
+                String k = matcher.group(1);
+                String v = null;
+                if (matcher.group(5) != null) {
+                    v = matcher.group(5);
+                } else {
+                    v = matcher.group(2);
+                }
+                
+                if (this.includeKeys != null && !this.includeKeys.contains(k)
+                        || this.excludeKeys != null
+                        && this.excludeKeys.contains(k)) {
+                    continue;
+                }
+
+                if (this.trim != null) {
+                    v = v.replaceAll(this.trim, "");
+                }
+                if (this.trimkey != null) {
+                    k = k.replaceAll(this.trimkey, "");
+                }
+
+                if (this.target != null) {
+                    targetObj.put(k, v);
+                } else {
+                    event.put(k, v);
+                }
+            }
+            
+            if (this.target != null) {
+                event.put(this.target, targetObj);
+            }
+        } catch (Exception e) {
+            log.warn(event + "kv faild");
+            success = false;            
+        }        
 
         this.postProcess(event, success);
 
